@@ -6,7 +6,7 @@ You are my ![Visitor Count](https://profile-counter.glitch.me/hxysaury/count.svg
 
 
 
-###  :seedling:[SQLMap](https://github.com/hxysaury/tool-use/blob/main/Docs/sqlmap.md)
+###  :seedling:[SQLMap](https://github.com/hxysaury/safe-tool-use/blob/main/Docs/sqlmap.md)
 
 ### :seedling:[Nmap](https://github.com/hxysaury/safe-tool-use/blob/main/Docs/Nmap.md)
 
